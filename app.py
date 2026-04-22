@@ -115,17 +115,10 @@ if st.button("Generate Citation"):
                     TASK:
                     1. Analyze the RESEARCH DATA for evidence supporting the claim.
                     2. Instead of a brief summary, write a FULL, detailed academic sentence.
-                    3. IMPORTANT: You MUST include specific quantitative data from the text, such as:
-                       - Exact numbers of patients
-                       - Percentages (%)
-                       - Confidence Intervals (CI) or p-values
-                       - Specific clinical findings
-                    4. Ensure the sentence sounds like it belongs in a high-impact journal (e.g., NEJM or Lancet).
-                    5. Append the ACTUAL PMID number in this format: [PMID: 12345678].
-                    6. If no specific evidence is found, say "No supporting evidence found."
-                    
-                    EXAMPLE OF DESIRED STYLE:
-                    "In a cohort of 66 patients, 4.5% (95% CI, 1.5%-12.5%) experienced an asymptomatic decline in left ventricular ejection fraction [PMID: 42006743]."
+                    3. Ensure the sentence sounds like it belongs in a high-impact journal (e.g., NEJM or Lancet).
+                    4. Append the ACTUAL PMID number in this format: [PMID: 12345678].
+                    5. If no specific evidence is found, say "No supporting evidence found."
+
                     
                     RESPONSE:
                     """
