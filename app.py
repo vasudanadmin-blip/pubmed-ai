@@ -104,7 +104,31 @@ if st.button("Generate Citation"):
                     context = "\n\n".join([f"PMID: {d['pmid']}\nCONTENT: {d['text']}" for d in relevant])
                     
                     # 5. Generate
-                    prompt = f"You are a scientific editor. CLAIM: {claim}\n\nDATA:\n{context}\n\nTASK: Rewrite claim professionally with [PMID: number] if supported. Otherwise, say 'No supporting evidence found.'"
+                    prompt = f"""
+                    You are an expert scientific medical writer.
+                    
+                    USER CLAIM: "{claim}"
+                    
+                    RESEARCH DATA:
+                    {context}
+                    
+                    TASK:
+                    1. Analyze the RESEARCH DATA for evidence supporting the claim.
+                    2. Instead of a brief summary, write a FULL, detailed academic sentence.
+                    3. IMPORTANT: You MUST include specific quantitative data from the text, such as:
+                       - Exact numbers of patients
+                       - Percentages (%)
+                       - Confidence Intervals (CI) or p-values
+                       - Specific clinical findings
+                    4. Ensure the sentence sounds like it belongs in a high-impact journal (e.g., NEJM or Lancet).
+                    5. Append the ACTUAL PMID number in this format: [PMID: 12345678].
+                    6. If no specific evidence is found, say "No supporting evidence found."
+                    
+                    EXAMPLE OF DESIRED STYLE:
+                    "In a cohort of 66 patients, 4.5% (95% CI, 1.5%-12.5%) experienced an asymptomatic decline in left ventricular ejection fraction [PMID: 42006743]."
+                    
+                    RESPONSE:
+                    """
                     response = model.generate_content(prompt)
                     
                     st.success("Done!")
