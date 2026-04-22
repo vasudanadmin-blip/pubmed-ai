@@ -19,20 +19,29 @@ with st.sidebar:
 
 # --- Helper: Self-Healing Model Selector ---
 def get_best_model(api_key):
-    """Finds the best available Gemini model to avoid 404 errors."""
+    """Force the use of Flash models to avoid the strict Pro-tier quotas."""
     genai.configure(api_key=api_key)
     try:
         available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
-        # Priority list for free tier
-        priority = ['gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-1.0-pro', 'gemini-pro']
         
-        for p in priority:
+        # 1. STRICT PRIORITY: Only look for Flash models first
+        # These have the highest free limits
+        flash_priority = ['gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-flash-8b']
+        
+        for p in flash_priority:
             for model_name in available_models:
                 if p in model_name:
                     return genai.GenerativeModel(model_name)
         
+        # 2. FALLBACK: If NO flash model exists, only then look for Pro
+        # But we warn the user that this might hit quota limits
+        for model_name in available_models:
+            if 'pro' in model_name:
+                return genai.GenerativeModel(model_name)
+        
         if available_models:
             return genai.GenerativeModel(available_models[0])
+            
     except Exception as e:
         st.error(f"Model selection error: {e}")
     return None
