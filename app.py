@@ -6,9 +6,9 @@ import numpy as np
 import google.generativeai as genai
 
 # --- Page Config ---
-st.set_page_config(page_title="PubMed AI Citation Generator", layout="centered")
-st.title("🔬 PubMed AI Citation Generator")
-st.markdown("Generate professional scientific citations using RAG architecture.")
+st.set_page_config(page_title="FindCitation: PubMed AI Citation Generator by P3t1", layout="centered")
+st.title("🔬 FindCitation: PubMed AI Citation Generator by P3t1")
+st.markdown("Generate professional scientific citations.")
 
 # --- Sidebar for API Keys ---
 with st.sidebar:
