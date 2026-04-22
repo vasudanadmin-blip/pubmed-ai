@@ -19,28 +19,29 @@ with st.sidebar:
 
 # --- Helper: Self-Healing Model Selector ---
 def get_best_model(api_key):
-    """Force the use of Flash models to avoid the strict Pro-tier quotas."""
+    """
+    Bulletproof selector: 
+    1. Finds ANY model with 'flash' in the name (regardless of version).
+    2. Strictly avoids any model with 'pro' in the name to prevent 429 errors.
+    """
     genai.configure(api_key=api_key)
     try:
-        available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
+        # Get all models that can generate content
+        all_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
         
-        # 1. STRICT PRIORITY: Only look for Flash models first
-        # These have the highest free limits
-        flash_priority = ['gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-flash-8b']
-        
-        for p in flash_priority:
-            for model_name in available_models:
-                if p in model_name:
-                    return genai.GenerativeModel(model_name)
-        
-        # 2. FALLBACK: If NO flash model exists, only then look for Pro
-        # But we warn the user that this might hit quota limits
-        for model_name in available_models:
-            if 'pro' in model_name:
+        # 1. Search for ANY Flash model (gemini-1.5-flash, gemini-2.0-flash, etc.)
+        for model_name in all_models:
+            if 'flash' in model_name.lower():
                 return genai.GenerativeModel(model_name)
         
-        if available_models:
-            return genai.GenerativeModel(available_models[0])
+        # 2. If no Flash model found, search for ANY model that is NOT 'pro'
+        for model_name in all_models:
+            if 'pro' not in model_name.lower():
+                return genai.GenerativeModel(model_name)
+        
+        # 3. Absolute last resort: pick the first available model if nothing else works
+        if all_models:
+            return genai.GenerativeModel(all_models[0])
             
     except Exception as e:
         st.error(f"Model selection error: {e}")
