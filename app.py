@@ -6,8 +6,8 @@ import numpy as np
 import google.generativeai as genai
 
 # --- Page Config ---
-st.set_page_config(page_title="FindCitation: PubMed AI Citation Generator by P3t1", layout="centered")
-st.title("🔬 FindCitation: PubMed AI Citation Generator by P3t1")
+st.set_page_config(page_title="FindCitations: PubMed AI Citation Generator by P3t1", layout="centered")
+st.title("🔬 PubMed AI Citation Generator")
 st.markdown("Generate professional scientific citations.")
 
 # --- Sidebar for API Keys ---
@@ -105,7 +105,7 @@ if st.button("Generate Citation"):
                     
                     # 5. Generate
                     prompt = f"""
-                    You are an expert scientific medical writer.
+                    You are a precise scientific data extractor.
                     
                     USER CLAIM: "{claim}"
                     
@@ -113,12 +113,16 @@ if st.button("Generate Citation"):
                     {context}
                     
                     TASK:
-                    1. Analyze the RESEARCH DATA for evidence supporting the claim.
-                    2. Instead of a brief summary, write a FULL, detailed academic sentence.
-                    3. Ensure the sentence sounds like it belongs in a high-impact journal (e.g., NEJM or Lancet).
-                    4. Append the ACTUAL PMID number in this format: [PMID: 12345678].
-                    5. If no specific evidence is found, say "No supporting evidence found."
-
+                    1. Search the RESEARCH DATA for the exact sentence that provides the evidence for the user claim.
+                    2. Copy that sentence WORD-FOR-WORD. 
+                    3. Do NOT rewrite the sentence. 
+                    4. Do NOT paraphrase. 
+                    5. Do NOT summarize.
+                    6. Do NOT change any numbers, percentages, or terminology.
+                    7. Place the exact sentence in quotation marks " ".
+                    8. Append the ACTUAL PMID number in this format: [PMID: 12345678].
+                    
+                    If no sentence in the provided data directly supports the claim, state "No direct quote found."
                     
                     RESPONSE:
                     """
