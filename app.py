@@ -8,7 +8,7 @@ import google.generativeai as genai
 # --- Page Config ---
 st.set_page_config(page_title="FindCitations: PubMed AI Citation Generator by P3t1", layout="centered")
 st.title("🔬 FindCitations: PubMed AI Citation Generator by P3t1")
-st.markdown("Finds your claim in a pubmed article abstact, displays the sentence and the article's Pubmed ID.")
+st.markdown("Finds your claim in a Pubmed article abstact, displays the sentence and the article's Pubmed ID.")
 
 # --- Sidebar for API Keys ---
 with st.sidebar:
